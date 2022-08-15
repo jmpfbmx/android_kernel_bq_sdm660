@@ -200,6 +200,11 @@ config INPUT_KEYCOMBO
 	---help---
 	  Say Y here if you want to take action when some keys are pressed;
 
+config HALL
+	tristate "HALL Switch"
+	---help---
+	  Say Y here if you want to enable hall sensor;
+
 comment "Input Device Drivers"
 
 source "drivers/input/keyboard/Kconfig"
