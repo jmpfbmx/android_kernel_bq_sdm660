@@ -1232,4 +1232,14 @@ config READ_TPINFO
 	  Say Y here if you want to creat tp_info node.
 
 	  If unsure, say N.
+
+config TOUCHSCREEN_HIMAX_CHIPSET
+	bool "Himax Touchscreen Driver"
+	depends on I2C
+	help
+	  Say Y here if you have a Himax CHIPSET touchscreen.
+
+	  If unsure, say N.
+
+source "drivers/input/touchscreen/hxchipset/Kconfig"
 endif
