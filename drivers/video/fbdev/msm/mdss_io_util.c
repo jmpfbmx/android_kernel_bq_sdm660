@@ -17,6 +17,10 @@
 #include <linux/delay.h>
 #include <linux/mdss_io_util.h>
 
+#ifdef CONFIG_TOUCHSCREEN_HIMAX_CHIPSET
+extern uint8_t HX_SMWP_EN;
+#endif
+
 #define MAX_I2C_CMDS  16
 void dss_reg_w(struct dss_io_data *io, u32 offset, u32 value, u32 debug)
 {
@@ -148,6 +152,18 @@ int msm_dss_config_vreg(struct device *dev, struct dss_vreg *in_vreg,
 
 	if (config) {
 		for (i = 0; i < num_vreg; i++) {
+#ifdef CONFIG_TOUCHSCREEN_HIMAX_CHIPSET
+			if (HX_SMWP_EN == 1) {
+				if (regulator_is_enabled(in_vreg[i].vreg) &&
+					((strcmp(in_vreg[i].vreg_name,"lab") == 0) ||
+					(strcmp(in_vreg[i].vreg_name,"ibb") == 0) ||
+					(strcmp(in_vreg[i].vreg_name,"wqhd-vddio") == 0))) {
+					pr_debug("TP_GESTURE don't enable[%d] %s\n", i,
+						in_vreg[i].vreg_name);
+					continue;
+				}
+			}
+#endif
 			curr_vreg = &in_vreg[i];
 			curr_vreg->vreg = regulator_get(dev,
 				curr_vreg->vreg_name);
@@ -176,7 +192,16 @@ int msm_dss_config_vreg(struct device *dev, struct dss_vreg *in_vreg,
 			}
 		}
 	} else {
+
 		for (i = num_vreg-1; i >= 0; i--) {
+#ifdef CONFIG_TOUCHSCREEN_HIMAX_CHIPSET
+			if (HX_SMWP_EN == 1) {
+				if((strcmp(in_vreg[i].vreg_name,"lab") == 0) || (strcmp(in_vreg[i].vreg_name,"ibb") == 0) || (strcmp(in_vreg[i].vreg_name,"wqhd-vddio") == 0)){
+					pr_debug("TP_GESTURE don't disable[%d] %s\n",i,in_vreg[i].vreg_name);
+					continue;
+				}
+			}
+#endif
 			curr_vreg = &in_vreg[i];
 			if (curr_vreg->vreg) {
 				type = (regulator_count_voltages(
