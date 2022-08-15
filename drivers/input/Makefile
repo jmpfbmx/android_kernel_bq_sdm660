@@ -28,6 +28,7 @@ obj-$(CONFIG_INPUT_MISC)	+= misc/
 obj-$(CONFIG_INPUT_APMPOWER)	+= apm-power.o
 obj-$(CONFIG_INPUT_KEYRESET)	+= keyreset.o
 obj-$(CONFIG_INPUT_KEYCOMBO)	+= keycombo.o
+obj-$(CONFIG_INPUT_FINGERPRINT) += fingerprint/
 obj-y   += sensors/bmi160/
 
 obj-$(CONFIG_HALL)		+= hall.o
