@@ -15,6 +15,16 @@
 #include "dsi-panel-truly-hx83112a-1080p-video.dtsi"
 #include "zangya-common-camera.dtsi"
 
+/ {
+	reserved-memory {
+		ramoops_mem: ramoops_region@b0000000 {
+			compatible = "removed-dma-pool";
+			no-map;
+			reg = <0 0xA0000000 0 0x00400000>;
+		};
+	};
+};
+
 &wdog {
 	qcom,bark-time = <15000>;
 };
@@ -199,6 +209,13 @@
 		vdd-io-supply= <&pm660_l8>;
 		interrupt-names = "hall_irq";
 		hall,irq-gpio = <&tlmm 70 0x0>;
+	};
+
+	ramoops {
+		compatible = "ramoops";
+		memory-region = <&ramoops_mem>;
+		console-size = <0x0 0x200000>;
+		pmsg-size = <0x0 0x200000>;
 	};
 };
 
